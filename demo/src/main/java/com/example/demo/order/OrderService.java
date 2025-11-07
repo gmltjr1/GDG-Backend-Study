@@ -3,6 +3,7 @@ package com.example.demo.order;
 import com.example.demo.order.dto.OrderCreateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -14,11 +15,13 @@ public class OrderService {
     private final OrderRepository orderRepository;
 
     // 주문 생성
+    @Transactional
     public Long createOrder(@RequestBody OrderCreateRequest request) {
         Order order = new Order(
                 request.customer,
                 request.product,
-                request.customerNote
+                request.customerNote,
+                request.quantity
         );
         orderRepository.save(order);
 
@@ -26,11 +29,13 @@ public class OrderService {
     }
 
     // 전체 주문 조회
+    @Transactional(readOnly = true)
     public List<Order> getAllOrders() {
         return orderRepository.findAll();
     }
 
     // 개별 주문 조회
+    @Transactional(readOnly = true)
     public Order getOrderById(Long orderId) {
         Order order = orderRepository.getById(orderId);
 
@@ -41,7 +46,8 @@ public class OrderService {
     }
 
     // 주문 삭제
+    @Transactional
     public void deleteOrderById(Long orderId) {
-        orderRepository.deleteByid(orderId);
+        orderRepository.deleteById(orderId);
     }
 }

@@ -2,9 +2,10 @@ package com.example.demo.member;
 
 import com.example.demo.member.dto.MemberCreateRequest;
 import com.example.demo.member.dto.MemberUpdateRequest;
-import jakarta.transaction.Transactional;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -19,7 +20,7 @@ public class MemberService {
      * 새 멤버 생성 후 저장
      *
      */
-    //@Transactional
+    @Transactional
     public Long createMember(MemberCreateRequest request) {
         Member existingMember = memberRepository.findByLoginId(request.getLoginId());
         if (existingMember != null) {
@@ -38,11 +39,13 @@ public class MemberService {
         return member.getId();
     }
 
+    @Transactional(readOnly = true)
     public List<Member> getAllMembers()
     {
         return memberRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public Member getMemberById(Long id) {
         Member member = memberRepository.findById(id);
 
@@ -53,6 +56,7 @@ public class MemberService {
         return member;
     }
 
+    @Transactional
     public void updateMember(Long id, MemberUpdateRequest request) {
         Member member = memberRepository.findById(id);
 
@@ -64,6 +68,7 @@ public class MemberService {
         member.updateInfo(request.getPassword(), request.getPhoneNumber(), request.getAddress());
     }
 
+    @Transactional
     public void deleteMember(Long id) {
         Member member = memberRepository.findById(id);
 
