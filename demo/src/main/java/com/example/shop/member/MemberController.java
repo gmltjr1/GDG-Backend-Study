@@ -1,5 +1,6 @@
 package com.example.shop.member;
 
+import com.example.shop.member.service.MemberService;
 import com.example.shop.member.dto.MemberCreateRequest;
 import com.example.shop.member.dto.MemberUpdateRequest;
 import lombok.RequiredArgsConstructor;

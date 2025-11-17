@@ -1,5 +1,7 @@
-package com.example.shop.member;
+package com.example.shop.member.service;
 
+import com.example.shop.member.Member;
+import com.example.shop.member.repository.MemberRepository;
 import com.example.shop.member.dto.MemberCreateRequest;
 import com.example.shop.member.dto.MemberUpdateRequest;
 
@@ -11,7 +13,7 @@ import java.util.*;
 
 @Service
 @RequiredArgsConstructor //생성자 어노테이션
-public class MemberService {
+public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
 
@@ -20,6 +22,7 @@ public class MemberService {
      * 새 멤버 생성 후 저장
      *
      */
+    @Override
     @Transactional
     public Long createMember(MemberCreateRequest request) {
         Member existingMember = memberRepository.findByLoginId(request.getLoginId());
@@ -39,12 +42,14 @@ public class MemberService {
         return member.getId();
     }
 
+    @Override
     @Transactional(readOnly = true)
     public List<Member> getAllMembers()
     {
         return memberRepository.findAll();
     }
 
+    @Override
     @Transactional(readOnly = true)
     public Member getMemberById(Long id) {
         Member member = memberRepository.findById(id);
@@ -56,6 +61,7 @@ public class MemberService {
         return member;
     }
 
+    @Override
     @Transactional
     public void updateMember(Long id, MemberUpdateRequest request) {
         Member member = memberRepository.findById(id);
@@ -68,6 +74,7 @@ public class MemberService {
         member.updateInfo(request.getPassword(), request.getPhoneNumber(), request.getAddress());
     }
 
+    @Override
     @Transactional
     public void deleteMember(Long id) {
         Member member = memberRepository.findById(id);

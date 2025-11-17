@@ -1,12 +1,14 @@
-package com.example.shop.order;
+package com.example.shop.order.service;
 
-import com.example.shop.member.MemberService;
+import com.example.shop.member.service.MemberService;
+import com.example.shop.order.Order;
 import com.example.shop.order.dto.OrderCreateRequest;
 import com.example.shop.order.dto.OrderResponseDto;
+import com.example.shop.order.repository.OrderRepository;
 import com.example.shop.orderProduct.OrderProduct;
-import com.example.shop.orderProduct.OrderProductRepository;
+import com.example.shop.orderProduct.repository.OrderProductRepository;
 import com.example.shop.product.Product;
-import com.example.shop.product.ProductService;
+import com.example.shop.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +21,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class OrderService {
+public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final OrderProductRepository orderProductRepository;
     private final MemberService memberService;
@@ -27,6 +29,7 @@ public class OrderService {
 
     // 주문 생성
     @Transactional
+    @Override
     public Long createOrder(@RequestBody OrderCreateRequest request) {
         Order order = new Order(
                 memberService.getMemberById(request.getCustomerId()),
@@ -51,6 +54,7 @@ public class OrderService {
 
     // 전체 주문 조회
     @Transactional(readOnly = true)
+    @Override
     public List<OrderResponseDto> getAllOrders() {
         List<Order> orders = orderRepository.findAll();
         List<OrderResponseDto> ords = new ArrayList<>();
@@ -63,6 +67,7 @@ public class OrderService {
 
     // 개별 주문 조회
     @Transactional(readOnly = true)
+    @Override
     public OrderResponseDto getOrderById(Long orderId) {
         Order order = orderRepository.getById(orderId);
 
@@ -88,6 +93,7 @@ public class OrderService {
 
     // 주문 삭제
     @Transactional
+    @Override
     public void deleteOrderById(Long orderId) {
         Order order = orderRepository.getById(orderId);
         for (OrderProduct op : order.getOrderProduct())

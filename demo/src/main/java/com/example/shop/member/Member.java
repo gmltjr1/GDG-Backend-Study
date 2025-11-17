@@ -64,6 +64,10 @@ public class Member {
             this.address = address;
         }
     }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 }
 
 

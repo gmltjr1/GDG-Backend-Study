@@ -2,6 +2,7 @@ package com.example.shop.product;
 
 import com.example.shop.product.dto.ProductCreateRequest;
 import com.example.shop.product.dto.ProductUpdateRequest;
+import com.example.shop.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
