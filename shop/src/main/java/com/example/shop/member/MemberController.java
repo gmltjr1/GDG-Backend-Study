@@ -5,6 +5,7 @@ import com.example.shop.member.dto.MemberCreateRequest;
 import com.example.shop.member.dto.MemberUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -20,7 +21,7 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping
-    public ResponseEntity<Void> createMember(@RequestBody MemberCreateRequest request) //@requestbodys는 json을 객체로 변환 하는 어노테이션
+    public ResponseEntity<Void> createMember(@RequestBody @Valid MemberCreateRequest request) //@requestbodys는 json을 객체로 변환 하는 어노테이션
     {
         Long memberId = memberService.createMember(request);
         return ResponseEntity.created(URI.create("/members/" + memberId)).build();
@@ -43,7 +44,7 @@ public class MemberController {
     @PatchMapping("/{memberId}")
     public ResponseEntity<Void> UpdateMember(
             @PathVariable Long memberId,
-            @RequestBody MemberUpdateRequest request)
+            @RequestBody @Valid MemberUpdateRequest request)
     {
         memberService.updateMember(memberId, request);
         return ResponseEntity.ok().build();
